@@ -1,1 +1,1 @@
-# search_activity
+# Repo for the Search activity of Students app
