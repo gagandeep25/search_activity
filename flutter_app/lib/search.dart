@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutterapp/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/person.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -32,67 +33,100 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 0),
+        padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-                "FIND PEOPLE",
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                )
-            ),
-            TextField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.search),
-                hintText: "You'll find her, even roll number works",
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                  "FIND PEOPLE",
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
               ),
             ),
-            SizedBox(height: 20.0,),
-            CustomRadioButton(
-              autoWidth: true,
-              enableShape: true,
-              buttonLables: ["EVERYONE", "STUDENT", "FACULTY"],
-              unSelectedColor: Colors.white,
-              buttonValues: ["EVERYONE", "STUDENT", "FACULTY"],
-              radioButtonValue: (value){
-                if(value == "EVERYONE"){
-                  setState(() {
-                    filteredList = people;
-                  });
-                }else if(value == "STUDENT") {
-                  setState(() {
-                    filteredList = people.where((p) => p is Student).toList();
-                  });
-                }else {
-                  setState(() {
-                    filteredList = people.where((p) => p is Faculty).toList();
-                  });
-                }
-              },
-              selectedColor: Colors.deepPurple[500],
-              defaultSelected: "EVERYONE",
-              customShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                side: BorderSide(
-                  color: Colors.deepPurple[500],
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 0,
+              ),
+              child: Material(
+                elevation: 3.0,
+                shadowColor: Colors.deepPurple[500],
+                child: TextField(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(4.0),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepPurple[500], width: 0),
+                    ),
+                    prefixIcon: Icon(Icons.search),
+                    hintText: "You'll find her, even roll number works",
+                  ),
                 ),
               ),
             ),
-            Divider(
-              color: Colors.black,
-              thickness: 0.5,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0),
+              child: CustomRadioButton(
+                elevation: 0,
+                height: 25.0,
+                fontSize: 12.0,
+                autoWidth: true,
+                enableShape: true,
+                buttonLabels: ["EVERYONE", "STUDENT", "FACULTY"],
+                unSelectedColor: Colors.white,
+                buttonValues: ["EVERYONE", "STUDENT", "FACULTY"],
+                radioButtonValue: (value){
+                  if(value == "EVERYONE"){
+                    setState(() {
+                      filteredList = people;
+                    });
+                  }else if(value == "STUDENT") {
+                    setState(() {
+                      filteredList = people.where((p) => p is Student).toList();
+                    });
+                  }else {
+                    setState(() {
+                      filteredList = people.where((p) => p is Faculty).toList();
+                    });
+                  }
+                },
+                selectedColor: Colors.deepPurple[500],
+                defaultSelected: "EVERYONE",
+                customShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(3.5)),
+                  side: BorderSide(
+                    color: Colors.deepPurple[500],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15.0,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 1.0,
+                  color: Colors.grey[600],
+                ),
+              ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                  thickness: 1.0,
+                  height: 37.0,
+                  color: Colors.grey[600],
+                ),
                 itemCount: filteredList.length,
                 itemBuilder: (context, index){
                   return ListTile(
                     onTap: () {},
                     title: Text(filteredList[index].name),
-                    leading: Icon(Icons.android),
+                    leading: CircleAvatar(child: Icon(Icons.android)),
                     subtitle: IntrinsicHeight(
                       child: Row(
                         children: <Widget>[
