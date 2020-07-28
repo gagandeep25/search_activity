@@ -11,17 +11,34 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
 
   List<dynamic> people = [
-    Student(name: "A", rollno: "RnA", hostel: "Cau", email: "rna", room: 204),
-    Student(name: "B", rollno: "RnB", hostel: "Gan", email: "rnb", room: 128),
-    Student(name: "C", rollno: "RnC", hostel: "Sar", email: "rnc", room: 317),
-    Student(name: "D", rollno: "RnD", hostel: "Sha", email: "rnd", room: 145),
-    Faculty(name: "W", office: "HSB202", officenum: 235569, email: "EmW"),
-    Faculty(name: "X", office: "HSB202", officenum: 235569, email: "EmX"),
-    Faculty(name: "Y", office: "ESB202", officenum: 235569, email: "EmY"),
-    Faculty(name: "Z", office: "MSB202", officenum: 235569, email: "EmZ"),
+    Student(name: "Ted Mosby", rollno: "EE12B290", hostel: "Cau", email: "rna", room: 204),
+    Student(name: "Robin Scherbatsky", rollno: "CS13B243", hostel: "Gan", email: "rnb", room: 128),
+    Student(name: "Lily Aldrin", rollno: "ME12B295", hostel: "Sar", email: "rnc", room: 317),
+    Student(name: "Marshal Eriksen", rollno: "HS15B090", hostel: "Sha", email: "rnd", room: 145),
+    Faculty(name: "Barney Stinson", office: "HSB202", officenum: 235569, email: "EmW"),
+    Faculty(name: "Rachel Green", office: "HSB202", officenum: 235569, email: "EmX"),
+    Faculty(name: "Chandler Bing", office: "ESB202", officenum: 235569, email: "EmY"),
+    Faculty(name: "Joey Tribbiani", office: "MSB202", officenum: 235569, email: "EmZ"),
   ];
 
   List filteredList = List();
+  List displayList = List();
+  bool searched = false;
+  
+  bool searchHandler(item, String string){
+    bool value;
+    if(string.length < 3){
+      value = false;
+    }else{
+      if(item is Student){
+        value = item.name.toLowerCase().contains(string.toLowerCase())
+                || item.rollno.toLowerCase().contains(string.toLowerCase());
+      }else{
+        value = item.name.toLowerCase().contains(string.toLowerCase());
+      }
+    }
+    return value;
+  }
 
   @override
   void initState() {
@@ -58,13 +75,19 @@ class _SearchState extends State<Search> {
                 shadowColor: Colors.deepPurple[500],
                 child: TextField(
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(4.0),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.deepPurple[500], width: 0),
                     ),
                     prefixIcon: Icon(Icons.search),
                     hintText: "You'll find her, even roll number works",
                   ),
+                  onChanged: (string){
+                    setState(() {
+                      string.length < 3? searched = false : searched = true;
+                      filteredList = people.where((p) => searchHandler(p, string)).toList();
+                      displayList = filteredList;
+                    });
+                  },
                 ),
               ),
             ),
@@ -82,15 +105,15 @@ class _SearchState extends State<Search> {
                 radioButtonValue: (value){
                   if(value == "EVERYONE"){
                     setState(() {
-                      filteredList = people;
+                      displayList = filteredList;
                     });
                   }else if(value == "STUDENT") {
                     setState(() {
-                      filteredList = people.where((p) => p is Student).toList();
+                      displayList = filteredList.where((p) => p is Student).toList();
                     });
                   }else {
                     setState(() {
-                      filteredList = people.where((p) => p is Faculty).toList();
+                      displayList = filteredList.where((p) => p is Faculty).toList();
                     });
                   }
                 },
@@ -115,28 +138,30 @@ class _SearchState extends State<Search> {
               ),
             ),
             Expanded(
-              child: ListView.separated(
+              child: !searched? Text("No, you are not a stalker") :
+              displayList.length == 0? Text("Search yielded 0 results") : 
+              ListView.separated(
                 separatorBuilder: (context, index) => Divider(
                   thickness: 1.0,
                   height: 37.0,
                   color: Colors.grey[600],
                 ),
-                itemCount: filteredList.length,
+                itemCount: displayList.length,
                 itemBuilder: (context, index){
                   return ListTile(
                     onTap: () {},
-                    title: Text(filteredList[index].name),
+                    title: Text(displayList[index].name),
                     leading: CircleAvatar(child: Icon(Icons.android)),
                     subtitle: IntrinsicHeight(
                       child: Row(
                         children: <Widget>[
-                          filteredList[index] is Student ? Text("STUDENT")
-                              : filteredList[index] is Faculty ? Text("FACULTY") : null,
+                          displayList[index] is Student ? Text("STUDENT")
+                              : displayList[index] is Faculty ? Text("FACULTY") : null,
                           VerticalDivider(
                             color: Colors.black,
                           ),
-                          filteredList[index] is Student ? Text(filteredList[index].rollno)
-                              : filteredList[index] is Faculty ? Text((filteredList[index].officenum).toString()) : null,
+                          displayList[index] is Student ? Text(displayList[index].rollno)
+                              : displayList[index] is Faculty ? Text((displayList[index].officenum).toString()) : null,
                         ],
                       ),
                     ),
