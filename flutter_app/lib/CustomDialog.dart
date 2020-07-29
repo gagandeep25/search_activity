@@ -82,7 +82,7 @@ class CustomDialog extends StatelessWidget {
                   onPressed: () {
                     return Navigator.of(context).pop(true);
                   },
-                  child: Text('Yes'),
+                  child: Text('SEND MAIL'),
                   color: Colors.white,
                   textColor: Colors.redAccent,
                 )
