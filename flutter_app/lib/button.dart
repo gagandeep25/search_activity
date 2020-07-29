@@ -82,10 +82,10 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
         elevation: widget.elevation,
         shape: widget.enableShape
             ? widget.customShape == null
-            ? RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-        )
-            : widget.customShape
+                ? RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  )
+                : widget.customShape
             : null,
         child: Container(
           height: widget.height,
@@ -98,17 +98,17 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             ),
             shape: widget.enableShape
                 ? widget.customShape == null
-                ? OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor, width: 1),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            )
-                : widget.customShape
+                    ? OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 1),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      )
+                    : widget.customShape
                 : OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor, width: 1),
-              borderRadius: BorderRadius.zero,
-            ),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor, width: 1),
+                    borderRadius: BorderRadius.zero,
+                  ),
             onPressed: () {
               widget.radioButtonValue(widget.buttonValues[index]);
               setState(() {
@@ -141,14 +141,13 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
   }
 
   _buildRadioButtons() {
-      return Container(
-        height: widget.height + widget.padding * 2,
-        child: Center(
+    return Container(
+      height: widget.height + widget.padding * 2,
+      child: Center(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: _buildButtonsRow(),
-          )
-        ),
-      );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildButtonsRow(),
+      )),
+    );
   }
 }
