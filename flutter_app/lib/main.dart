@@ -5,9 +5,6 @@ void main() {
   runApp(MaterialApp(
     home: Search(),
     theme: ThemeData(
-      textTheme: TextTheme(
-        bodyText1: TextStyle(color: Colors.deepPurple[500])
-      ),
       buttonTheme: ButtonThemeData(
         minWidth: 60.0
       ),
